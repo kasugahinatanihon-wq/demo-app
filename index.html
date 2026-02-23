@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ふたりクラファン</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg-blobs" aria-hidden="true"></div>
+    <main class="container">
+      <header class="hero">
+        <div class="hero-actions">
+          <p class="badge">🐾 夫婦専用クラウドファンディング</p>
+          <div class="quick-actions">
+            <button id="openSettings" class="btn" type="button">設定</button>
+            <button id="openCreateProject" class="fab" type="button" aria-label="お願いを作る">＋</button>
+          </div>
+        </div>
+        <h1>ふたりクラファン</h1>
+        <p class="subtitle">ふたりの「ほしい」を楽しく応援するポイントアプリ</p>
+      </header>
+
+      <section class="card" id="setupCard">
+        <h2>はじめに設定</h2>
+        <p class="small">最初にふたりの名前を入れてください（あとで変更可能）。</p>
+        <form id="setupForm" class="grid-2">
+          <label>
+            👩 パートナー1の名前
+            <input type="text" id="partnerOneName" maxlength="20" placeholder="例: みさき" required />
+          </label>
+          <label>
+            👨 パートナー2の名前
+            <input type="text" id="partnerTwoName" maxlength="20" placeholder="例: たくみ" required />
+          </label>
+          <label class="full-width">
+            最初に使うユーザー
+            <select id="initialUser" required>
+              <option value="u1">パートナー1</option>
+              <option value="u2">パートナー2</option>
+            </select>
+          </label>
+          <button type="submit" class="btn primary">保存する</button>
+        </form>
+      </section>
+
+      <section class="card dashboard settings-panel" id="dashboard" hidden>
+        <div>
+          <div class="panel-head">
+            <h2>設定</h2>
+            <button id="closeSettings" class="btn" type="button">閉じる</button>
+          </div>
+          <p class="small">だれとして使うか選択できます。</p>
+          <div id="userSwitch" class="switch"></div>
+        </div>
+        <div id="balances" class="balances"></div>
+        <div class="sync-panel">
+          <h2>ふたり共有リンク</h2>
+          <p class="small">同じリンクを開くと、同じ部屋でやり取りできます。</p>
+          <label>
+            招待リンク
+            <input id="shareLink" type="text" readonly />
+          </label>
+          <button id="copyShareLink" type="button" class="btn">リンクをコピー</button>
+          <p id="syncStatus" class="small"></p>
+        </div>
+      </section>
+
+      <section class="card create-modal" id="createProjectCard" hidden>
+        <div class="panel-head">
+          <h2>新しいお願いを作る</h2>
+          <button id="closeCreateProject" class="btn" type="button">閉じる</button>
+        </div>
+        <form id="projectForm" class="project-form">
+          <label>
+            タイトル
+            <input type="text" id="title" maxlength="40" placeholder="例: 記念日ディナー" required />
+          </label>
+          <label>
+            目標ポイント
+            <input type="number" id="target" min="100" step="100" placeholder="例: 3000" required />
+          </label>
+          <label>
+            締切日
+            <input type="date" id="deadline" required />
+          </label>
+          <label>
+            テーマ
+            <select id="theme">
+              <option value="business">ビジネス</option>
+              <option value="dream-challenge">夢・チャレンジ</option>
+              <option value="beauty-healthcare">ビューティー・ヘルスケア</option>
+              <option value="fashion">ファッション</option>
+              <option value="furniture-electronics">家具・家電</option>
+              <option value="accessories">小物</option>
+              <option value="travel">旅行</option>
+              <option value="food-drink">フード・飲食店</option>
+              <option value="music">音楽</option>
+              <option value="art">アート</option>
+              <option value="anime-manga-game">アニメ・漫画・ゲーム</option>
+            </select>
+          </label>
+          <fieldset class="full-width tier-fieldset">
+            <legend>段階リターン（支援額ごと）</legend>
+            <div class="tier-grid">
+              <label>
+                しきい値1
+                <input type="number" id="tier1Amount" min="100" step="100" placeholder="例: 1000" required />
+              </label>
+              <label>
+                リターン1
+                <input type="text" id="tier1Reward" maxlength="60" placeholder="例: お礼メッセージ" required />
+              </label>
+            </div>
+            <div class="tier-grid">
+              <label>
+                しきい値2
+                <input type="number" id="tier2Amount" min="100" step="100" placeholder="例: 3000（任意）" />
+              </label>
+              <label>
+                リターン2
+                <input type="text" id="tier2Reward" maxlength="60" placeholder="例: 手書き手紙（任意）" />
+              </label>
+            </div>
+            <div class="tier-grid">
+              <label>
+                しきい値3
+                <input type="number" id="tier3Amount" min="100" step="100" placeholder="例: 5000（任意）" />
+              </label>
+              <label>
+                リターン3
+                <input type="text" id="tier3Reward" maxlength="60" placeholder="例: ディナー招待（任意）" />
+              </label>
+            </div>
+          </fieldset>
+          <label class="full-width">
+            内容
+            <textarea id="description" rows="3" maxlength="150" placeholder="どんなことに使うポイントかを書いてね" required></textarea>
+          </label>
+          <label class="full-width">
+            写真（任意）
+            <input type="file" id="projectImage" accept="image/*" />
+            <small class="small">スマホ写真OK（推奨: 2MB以下）</small>
+          </label>
+          <button type="submit" class="btn primary">お願いを公開</button>
+        </form>
+      </section>
+
+      <section class="card" id="projectsCard" hidden>
+        <div class="head-row">
+          <h2>お願いリスト</h2>
+          <button id="resetData" class="btn danger" type="button">データをリセット</button>
+        </div>
+        <div id="projectList" class="project-list"></div>
+      </section>
+
+      <section class="card" id="historyCard" hidden>
+        <h2>応援履歴</h2>
+        <ul id="historyList" class="history-list"></ul>
+      </section>
+    </main>
+
+    <template id="projectTemplate">
+      <article class="project">
+        <div class="project-top">
+          <span class="pet"></span>
+          <span class="status"></span>
+        </div>
+        <h3 class="project-title"></h3>
+        <p class="meta"></p>
+        <img class="project-image" alt="お願いの画像" hidden />
+        <p class="desc"></p>
+        <div class="reward">
+          <p class="reward-state"></p>
+          <ul class="tier-list"></ul>
+        </div>
+        <button class="btn reward-action" type="button" hidden></button>
+        <div class="progress-wrap">
+          <div class="progress"></div>
+        </div>
+        <p class="numbers"></p>
+        <form class="support-form">
+          <label>
+            応援ポイント
+            <input type="number" min="100" step="100" placeholder="100" required />
+          </label>
+          <button type="submit" class="btn">応援する</button>
+        </form>
+      </article>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
